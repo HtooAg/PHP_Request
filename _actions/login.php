@@ -3,7 +3,7 @@ session_start();
 
 $name = $_POST["name"];
 $email = $_POST["email"];
-$password = $_POST["password"];
+$password = md5($_POST["password"]);
 $phone = $_POST["phone"];
 $address = $_POST["address"];
 $general = $_POST["general"];
@@ -24,7 +24,8 @@ if (validateUser($name, $email, $password, $phone, $address, $general, $gender))
 		"general" => $general,
 		"gender" => $gender,
 	];
-	header('location: ../profile.php');
+	header('location: ../profile.php?correct=1');
+	exit();
 } else {
 	$errorMessage = "You need to fill out all the required fields!";
 	header('location: ./home.php?error=' . $errorMessage);

@@ -7,9 +7,11 @@ if (!isset($_SESSION['user'])) {
 	exit();
 }
 
+
 $name = $_SESSION['user']['name'];
 $email = $_SESSION['user']['email'];
 $phone = $_SESSION['user']['phone'];
+$password = $_SESSION['user']['password'];
 $address = $_SESSION['user']['address'];
 $general = $_SESSION['user']['general'];
 $gender = $_SESSION['user']['gender'];
@@ -41,19 +43,41 @@ $gender = $_SESSION['user']['gender'];
 
 <body>
 	<div class="container wrap mt-5">
-		<?php if (!isset($_GET["incorrect"])) : ?>
+		<?php if (isset($_GET["correct"])) : ?>
 			<div class="alert alert-success alert-dismissible fade show text-center" id="alertBox" role="alert">
 				<strong>You are now logged in successfully!</strong>
 				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 			</div>
 		<?php endif ?>
-		<div class="icon text-center">
-			<i class="bi bi-person-circle h1"></i>
-		</div>
+
+		<?php if (file_exists('_actions/photos/profile.jpg')) : ?>
+			<div class="d-flex justify-content-center align-items-center">
+				<img class="img-thumbnail rounded-circle" src="_actions/photos/profile.jpg" alt="Profile Photo" style="width: 120px; height: 120px; object-fit: cover;">
+			</div>
+		<?php endif ?>
+
 		<h2 class="my-3 text-center"><?php echo $name . " " . "($general)" ?> </h2>
+
+		<?php if (isset($_GET['error'])) : ?>
+			<div class="alert alert-warning alert-dismissible fade show text-center" id="alertBox" role="alert">
+				<strong>Cannot Upload File!</strong>
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			</div>
+		<?php endif ?>
+
+		<form action="_actions/upload.php" method="post" enctype="multipart/form-data">
+			<div class="input-group mb-3">
+				<input type="file" name="photo" class="form-control">
+				<button class="btn btn-secondary">Upload</button>
+			</div>
+		</form>
+
 		<ul class="list-group">
 			<li class="list-group-item">
 				<b>Email: </b> <?php echo $email ?>
+			</li>
+			<li class="list-group-item">
+				<b>Password: </b> <?php echo $password ?>
 			</li>
 			<li class="list-group-item">
 				<b>Phone: </b> <?php echo $phone ?>
